@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,12 +12,10 @@ import {
 } from "@/components/ui/select";
 import { Todo } from "@/lib/types";
 import { toast } from "sonner";
+import { useTodo } from "@/contexts/TodoContext";
 
-interface TodoInputProps {
-  onAdd: (title: string, priority: Todo["priority"]) => void;
-}
-
-export const TodoInput = ({ onAdd }: TodoInputProps) => {
+export const TodoInput = memo(() => {
+  const { addTodo } = useTodo();
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState<Todo["priority"]>("medium");
 
@@ -25,7 +23,7 @@ export const TodoInput = ({ onAdd }: TodoInputProps) => {
     e.preventDefault();
     
     if (title.trim()) {
-      onAdd(title.trim(), priority);
+      addTodo(title.trim(), priority);
       setTitle("");
       setPriority("medium");
       toast.success("Task added");
@@ -66,4 +64,6 @@ export const TodoInput = ({ onAdd }: TodoInputProps) => {
       </div>
     </form>
   );
-};
+});
+
+TodoInput.displayName = "TodoInput";

@@ -1,13 +1,12 @@
 
-import { Todo } from "@/lib/types";
+import { memo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useTodo } from "@/contexts/TodoContext";
 
-interface TodoStatsProps {
-  todos: Todo[];
-}
+export const TodoStats = memo(() => {
+  const { todos } = useTodo();
 
-export const TodoStats = ({ todos }: TodoStatsProps) => {
   if (todos.length === 0) return null;
 
   const completed = todos.filter((todo) => todo.completed).length;
@@ -53,4 +52,6 @@ export const TodoStats = ({ todos }: TodoStatsProps) => {
       </CardContent>
     </Card>
   );
-};
+});
+
+TodoStats.displayName = "TodoStats";

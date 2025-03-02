@@ -1,28 +1,17 @@
 
-import { TodoFilter as FilterType } from "@/lib/types";
+import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTodo } from "@/contexts/TodoContext";
 
-interface TodoFilterProps {
-  currentFilter: FilterType;
-  onFilterChange: (filter: FilterType) => void;
-  todoCount: {
-    all: number;
-    active: number;
-    completed: number;
-  };
-}
+export const TodoFilter = memo(() => {
+  const { filter: currentFilter, setFilter, todoCount } = useTodo();
 
-export const TodoFilter = ({
-  currentFilter,
-  onFilterChange,
-  todoCount,
-}: TodoFilterProps) => {
-  const filters: { value: FilterType; label: string }[] = [
+  const filters = [
     { value: "all", label: `All (${todoCount.all})` },
     { value: "active", label: `Active (${todoCount.active})` },
     { value: "completed", label: `Completed (${todoCount.completed})` },
-  ];
+  ] as const;
 
   return (
     <div className="flex justify-center mb-6">
@@ -32,7 +21,7 @@ export const TodoFilter = ({
             key={filter.value}
             variant="ghost"
             size="sm"
-            onClick={() => onFilterChange(filter.value)}
+            onClick={() => setFilter(filter.value)}
             className={cn(
               "rounded-md transition-all",
               currentFilter === filter.value &&
@@ -45,4 +34,6 @@ export const TodoFilter = ({
       </div>
     </div>
   );
-};
+});
+
+TodoFilter.displayName = "TodoFilter";

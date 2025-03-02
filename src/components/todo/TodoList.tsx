@@ -1,20 +1,11 @@
 
+import { memo } from "react";
 import { TodoItem } from "./TodoItem";
-import { Todo, TodoFilter } from "@/lib/types";
+import { useTodo } from "@/contexts/TodoContext";
 
-interface TodoListProps {
-  todos: Todo[];
-  filter: TodoFilter;
-  onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
-}
-
-export const TodoList = ({ 
-  todos, 
-  filter, 
-  onToggle, 
-  onDelete 
-}: TodoListProps) => {
+export const TodoList = memo(() => {
+  const { todos, filter } = useTodo();
+  
   // Filtreleme işlemi
   const filteredTodos = todos.filter((todo) => {
     if (filter === "all") return true;
@@ -37,10 +28,10 @@ export const TodoList = ({
         <TodoItem
           key={todo.id}
           todo={todo}
-          onToggle={onToggle}
-          onDelete={onDelete}
         />
       ))}
     </div>
   );
-};
+});
+
+TodoList.displayName = "TodoList";

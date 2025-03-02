@@ -1,61 +1,20 @@
 
-import { useState, useEffect } from "react";
 import { TodoInput } from "@/components/todo/TodoInput";
 import { TodoList } from "@/components/todo/TodoList";
 import { TodoFilter } from "@/components/todo/TodoFilter";
 import { TodoStats } from "@/components/todo/TodoStats";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Todo, TodoFilter as FilterType } from "@/lib/types";
-import { getTodos, saveTodos, createTodo, sortTodosByPriority } from "@/lib/todo-utils";
 import { Button } from "@/components/ui/button";
+import { TodoProvider, useTodo } from "@/contexts/TodoContext";
 import { toast } from "sonner";
 
-const Index = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [filter, setFilter] = useState<FilterType>("all");
+// TodoApp bileşeni - Context tüketicisi
+const TodoApp = () => {
+  const { todos, filter, todoCount, clearCompleted } = useTodo();
 
-  // İlk yüklemede localStorage'dan todoları al
-  useEffect(() => {
-    const storedTodos = getTodos();
-    setTodos(storedTodos);
-  }, []);
-
-  // Todo durumu değiştiğinde localStorage'a kaydet
-  useEffect(() => {
-    saveTodos(todos);
-  }, [todos]);
-
-  // Yeni todo ekle
-  const handleAddTodo = (title: string, priority: Todo["priority"]) => {
-    const newTodo = createTodo(title, priority);
-    setTodos((prevTodos) => sortTodosByPriority([...prevTodos, newTodo]));
-  };
-
-  // Todo'nun tamamlandı durumunu değiştir
-  const handleToggleTodo = (id: string) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  // Todo'yu sil
-  const handleDeleteTodo = (id: string) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-  };
-
-  // Tümünü temizle
   const handleClearCompleted = () => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
+    clearCompleted();
     toast.success("Completed tasks cleared");
-  };
-
-  // Todo sayıları
-  const todoCount = {
-    all: todos.length,
-    active: todos.filter((todo) => !todo.completed).length,
-    completed: todos.filter((todo) => todo.completed).length,
   };
 
   return (
@@ -66,24 +25,15 @@ const Index = () => {
           <ThemeToggle />
         </div>
         
-        <TodoInput onAdd={handleAddTodo} />
+        <TodoInput />
         
         {todos.length > 0 && (
           <>
-            <TodoStats todos={todos} />
+            <TodoStats />
             
-            <TodoFilter
-              currentFilter={filter}
-              onFilterChange={setFilter}
-              todoCount={todoCount}
-            />
+            <TodoFilter />
             
-            <TodoList
-              todos={todos}
-              filter={filter}
-              onToggle={handleToggleTodo}
-              onDelete={handleDeleteTodo}
-            />
+            <TodoList />
             
             {todoCount.completed > 0 && (
               <div className="mt-4 text-center">
@@ -100,6 +50,15 @@ const Index = () => {
         )}
       </div>
     </div>
+  );
+};
+
+// Ana Index bileşeni - Context Provider'ı içeriyor
+const Index = () => {
+  return (
+    <TodoProvider>
+      <TodoApp />
+    </TodoProvider>
   );
 };
 

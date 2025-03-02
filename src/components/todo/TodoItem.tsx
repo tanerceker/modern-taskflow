@@ -1,15 +1,15 @@
 
-import { Check, Trash } from "lucide-react";
+import { memo } from "react";
+import { Trash } from "lucide-react";
 import { Todo } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useTodo } from "@/contexts/TodoContext";
 
 interface TodoItemProps {
   todo: Todo;
-  onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
 }
 
 const priorityClasses = {
@@ -18,14 +18,16 @@ const priorityClasses = {
   high: "border-l-4 border-l-red-400",
 };
 
-export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
+export const TodoItem = memo(({ todo }: TodoItemProps) => {
+  const { toggleTodo, deleteTodo } = useTodo();
+
   const handleToggle = () => {
-    onToggle(todo.id);
+    toggleTodo(todo.id);
     toast.success(todo.completed ? "Task marked as undone" : "Task completed");
   };
 
   const handleDelete = () => {
-    onDelete(todo.id);
+    deleteTodo(todo.id);
     toast.success("Task deleted");
   };
 
@@ -74,4 +76,6 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
       </div>
     </div>
   );
-};
+});
+
+TodoItem.displayName = "TodoItem";
