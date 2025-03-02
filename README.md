@@ -1,3 +1,5 @@
+![Preview App](/public/preview.jpg)
+
 
 # Task Flow - Modern Todo Uygulaması
 
