@@ -1,69 +1,109 @@
-# Welcome to your Lovable project
 
-## Project info
+# Task Flow - Modern Todo Uygulaması
 
-**URL**: https://lovable.dev/projects/8859df57-9ae6-4ebe-af43-987a1ca6a22c
+Bu proje, modern web teknolojileri kullanılarak geliştirilmiş, kullanıcı dostu bir görev yönetim uygulamasıdır.
 
-## How can I edit this code?
+## Kullanılan Teknolojiler
 
-There are several ways of editing your application.
+- **React**: Kullanıcı arayüzü geliştirme
+- **TypeScript**: Tip güvenliği
+- **Vite**: Hızlı geliştirme ortamı
+- **Tailwind CSS**: Stil ve tasarım
+- **Shadcn UI**: Modern UI bileşenleri
+- **Context API**: Durum yönetimi
+- **localStorage**: Veri saklama
 
-**Use Lovable**
+## Özellikler
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8859df57-9ae6-4ebe-af43-987a1ca6a22c) and start prompting.
+- Görev ekleme, silme ve tamamlama
+- Görevleri önceliklendirme (düşük, orta, yüksek)
+- Görevleri filtreleme (tümü, aktif, tamamlanan)
+- Tamamlanan görevleri toplu silme
+- Karanlık/Aydınlık tema desteği
+- Tamamen duyarlı tasarım (responsive design)
+- Performans optimizasyonları (React.memo, useCallback, useMemo)
 
-Changes made via Lovable will be committed automatically to this repo.
+## Proje Yapısı
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+src/
+├── components/         # UI bileşenleri
+│   ├── todo/           # Todo ile ilgili bileşenler
+│   │   ├── TodoInput.tsx
+│   │   ├── TodoItem.tsx
+│   │   ├── TodoList.tsx
+│   │   ├── TodoFilter.tsx
+│   │   └── TodoStats.tsx
+│   └── ui/             # Shadcn UI bileşenleri
+├── contexts/           # Context API
+│   └── TodoContext.tsx # Merkezi durum yönetimi
+├── lib/                # Yardımcı fonksiyonlar ve tipler
+│   ├── todo-utils.ts   # Todo işlemleri için yardımcı fonksiyonlar
+│   └── types.ts        # Tip tanımlamaları
+└── pages/              # Sayfa bileşenleri
+    └── Index.tsx       # Ana sayfa
 ```
 
-**Edit a file directly in GitHub**
+## Kurulum
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Ön Koşullar
 
-**Use GitHub Codespaces**
+- Node.js (LTS sürümü önerilir)
+- npm veya yarn
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Adımlar
 
-## What technologies are used for this project?
+1. Projeyi klonlayın
+   ```bash
+   git clone <repo-url>
+   cd task-flow
+   ```
 
-This project is built with .
+2. Bağımlılıkları yükleyin
+   ```bash
+   npm install
+   # veya
+   yarn install
+   ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+3. Geliştirme sunucusunu başlatın
+   ```bash
+   npm run dev
+   # veya
+   yarn dev
+   ```
 
-## How can I deploy this project?
+4. Tarayıcınızda açın
+   ```
+   http://localhost:8080
+   ```
 
-Simply open [Lovable](https://lovable.dev/projects/8859df57-9ae6-4ebe-af43-987a1ca6a22c) and click on Share -> Publish.
+## Uygulama Mimarisi
 
-## I want to use a custom domain - is that possible?
+### Durum Yönetimi
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Uygulama, Context API ve useReducer hook'u kullanarak merkezi bir durum yönetimine sahiptir. `TodoContext.tsx` dosyası, tüm todo işlemlerini (ekleme, silme, filtreleme, vb.) ve durumları yönetir.
+
+### Performans Optimizasyonları
+
+- **React.memo**: Gereksiz yeniden render'ları önlemek için bileşenler memo edilmiştir.
+- **useCallback**: Fonksiyonlar, gereksiz yeniden oluşturmayı önlemek için useCallback ile sarılmıştır.
+- **useMemo**: Hesaplama gerektiren değerler, useMemo ile önbelleğe alınmıştır.
+- **Lazy Loading**: Gerektiğinde bileşenlerin lazy loading ile yüklenmesi.
+
+### localStorage Entegrasyonu
+
+Kullanıcının görevleri, tarayıcı kapatıldıktan sonra da korunması için localStorage'da saklanır. Her durum değişikliğinde veriler otomatik olarak kaydedilir.
+
+## Dağıtım (Deployment)
+
+Projeyi dağıtmak için şu adımları izleyin:
+
+1. Projeyi derleyin
+   ```bash
+   npm run build
+   # veya
+   yarn build
+   ```
+
+2. Oluşturulan `dist` klasörünü tercih ettiğiniz hosting hizmetine yükleyin (Netlify, Vercel, GitHub Pages, vb.)
